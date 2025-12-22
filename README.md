@@ -3,6 +3,9 @@ Easy budgeting for you so you can see how much u spent or gained and even compar
 
 Note: only works for IDR currency for now (maybe I will implement more currencies later)
 
+##Live Demo:
+https://ez-budgeting.netlify.app
+
 ## 🔐 Security Note
 
 This project uses Firebase Authentication.
