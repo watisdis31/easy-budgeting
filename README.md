@@ -1,10 +1,11 @@
-# easy-budgeting
+# EZ-Budgeting
 Easy budgeting for you so you can see how much u spent or gained and even compare how much money you spent or saved from the previous month!
 
 Note: only works for IDR currency for now (maybe I will implement more currencies later)
 
 ## Live Demo:
 https://ez-budgeting.netlify.app
+https://ez-budgeting.vercel.app/
 
 ## 🔐 Security Note
 
