@@ -5,6 +5,7 @@ Note: only works for IDR currency for now (maybe I will implement more currencie
 
 ## Live Demo:
 https://ez-budgeting.netlify.app
+<br>
 https://ez-budgeting.vercel.app/
 
 ## 🔐 Security Note
