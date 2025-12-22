@@ -135,7 +135,7 @@ html {
 
 @media (max-width: 1023px) { /* for mobile scrolling */
   #transactions {
-    height: 45vh;
+    height: 20vh;
     overflow-y: auto;
   }
 }
@@ -310,7 +310,7 @@ html {
       "compare inputs"
       "calendar transactions"
       "day transactions";
-    gap: 24px;
+    gap: 19px;
     align-items: start;
   }
 
@@ -322,16 +322,16 @@ html {
   #app > .text-center         { grid-area: day; }
 
   /* RIGHT COLUMN */
-  #app > .card:nth-of-type(5),
-  #app > .card:nth-of-type(8) {
-    grid-area: inputs;
-  }
+  #app > .card[data-role="input"] {
+  grid-area: inputs;
+}
 
   #transactions {
     grid-area: transactions;
-    height: calc(75vh - 260px);
+    height: calc(100vh - 260px);
     overflow-y: auto;
     overscroll-behavior: contain;
+    margin-top: -103px;
   }
 
   /* HEADER POLISH */
@@ -341,11 +341,162 @@ html {
   }
 
   #logged-in p {
-    font-size: 0.65rem;
+    font-size: 0.8rem;
   }
 
   #logoutBtn {
     min-height: 36px;
+    font-size: 1.5rem;
+    margin-left: 50%;
+    width: 100px;
+  }
+}
+
+/* =========================
+   BW2 AUTH SCREEN
+   ========================= */
+
+#auth-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.auth-card {
+  background: #f8f8f8;
+  border: 4px solid #111;
+  box-shadow: 0 8px 0 #333;
+  padding: 28px 24px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+}
+
+/* TITLE */
+.auth-title {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+/* SUBTITLE */
+.auth-subtitle {
+  font-size: 0.65rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.auth-subtitle span {
+  color: #cc0000;
+}
+
+/* GOOGLE BUTTON */
+.bw2-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: 100%;
+  min-height: 52px;
+
+  font-family: bw2;
+  font-size: 1rem;
+
+  background: #ffffff;
+  border: 3px solid #111;
+  box-shadow: 0 4px 0 #333;
+
+  cursor: pointer;
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
+}
+
+.bw2-google-btn img {
+  width: 25px;
+  height: 25px;
+  image-rendering: pixelated;
+}
+
+.bw2-google-btn:hover {
+  background: #f0f0f0;
+}
+
+.bw2-google-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #333;
+}
+
+@media (max-width: 576px) {
+  .auth-card {
+    padding: 24px 18px;
+  }
+
+  .auth-title {
+    font-size: 0.9rem;
+  }
+
+  .auth-subtitle {
+    font-size: 0.6rem;
+  }
+
+  .bw2-google-btn {
+    font-size: 1rem;
+    min-height: 56px; /* thumb friendly */
+  }
+}
+
+@media (min-width: 1024px) {
+
+  .auth-card {
+    padding: 36px 32px;
+  }
+
+  .auth-title {
+    font-size: 1.1rem;
+  }
+
+  .auth-subtitle {
     font-size: 0.7rem;
   }
+}
+
+/* =========================
+   SIGN-IN SCREEN — NO SCROLL
+   ========================= */
+
+#logged-out {
+  position: fixed;
+  inset: 0; /* top:0 right:0 bottom:0 left:0 */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: #cdcdcd;
+  z-index: 999;
+
+  overflow: hidden;
+}
+
+#logged-out.d-none {
+  display: none !important;
+}
+
+#logged-out h1 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+#logged-out p {
+  font-size: 0.6rem;
+  max-width: 320px;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 24px;
 }
