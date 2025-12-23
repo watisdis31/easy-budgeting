@@ -15,7 +15,7 @@ Track your **income**, **expenses**, **daily spending**, and even **compare this
 - 📊 Monthly summary (income, expense, savings)  
 - 📈 Month-to-month comparison  
 - 🧠 Human-friendly UX (Today / Yesterday labels)  
-- 🎮 BW2-inspired retro UI (yes, that BW2)  
+- 🎮 Pokémon-inspired retro UI
 - 🔐 Google Sign-In (Firebase Auth)
 
 ---
