@@ -34,17 +34,20 @@ function getLocalDateString(date = new Date()) {
   return `${year}-${month}-${day}`;
 }
 
+let chartModalInstance = null;
 let selectedDate = getLocalDateString(); // uses device local date
 let currentMonth = new Date(selectedDate);
 
 let deleteId = null;
+let dateSummary = {};
+// example: { "2025-01-10": { income: 50000, expense: 20000 } }
+let allTransactions = [];
 
 /* ELEMENTS */
 const calendarGrid = document.querySelector(".calendar-grid");
 const monthLabel = document.getElementById("monthLabel");
 const currentDay = document.getElementById("currentDay");
 const transactionsEl = document.getElementById("transactions");
-currentDay.textContent = selectedDate;
 
 const monthIncome = document.getElementById("monthIncome");
 const monthExpense = document.getElementById("monthExpense");
@@ -76,6 +79,8 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById("userEmail").textContent = user.email;
     document.getElementById("profilePic").src = user.photoURL || "default.png";
 
+    currentDay.textContent = humanFriendlyDate(selectedDate);
+
     renderCalendar();
     loadTransactions();
   } else {
@@ -105,12 +110,23 @@ function renderCalendar() {
     const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(
       d,
     ).padStart(2, "0")}`;
+    let extraClass = "";
+    const summary = dateSummary[dateStr];
+
+    if (summary) {
+      if (summary.income && summary.expense) extraClass = "has-both";
+      else if (summary.income) extraClass = "has-income";
+      else if (summary.expense) extraClass = "has-expense";
+    }
+
     calendarGrid.innerHTML += `
-      <div class="calendar-day ${dateStr === selectedDate ? "active" : ""}"
-        onclick="selectDate('${dateStr}')">
-        ${d}
-      </div>
-    `;
+  <div class="calendar-day ${extraClass} ${
+    dateStr === selectedDate ? "active" : ""
+  }"
+    onclick="selectDate('${dateStr}')">
+    ${d}
+  </div>
+`;
   }
 }
 
@@ -160,12 +176,19 @@ document.getElementById("addExpense").onclick = () =>
 
 async function addTransaction(type, amount, label) {
   if (!amount || !label) return;
+
+  const category =
+    type === "expense"
+      ? document.getElementById("expenseCategory").value
+      : null;
+
   await addDoc(
     collection(db, "budgets", auth.currentUser.uid, "transactions"),
     {
       type,
       amount: Number(amount),
       label,
+      category,
       date: selectedDate,
     },
   );
@@ -202,10 +225,24 @@ async function loadTransactions() {
 
   const snap = await getDocs(collection(db, "budgets", uid, "transactions"));
 
-  const allTransactions = snap.docs.map((d) => ({
+  allTransactions = snap.docs.map((d) => ({
     id: d.id,
     ...d.data(),
   }));
+
+  dateSummary = {};
+
+  allTransactions.forEach((t) => {
+    if (!dateSummary[t.date]) {
+      dateSummary[t.date] = { income: 0, expense: 0 };
+    }
+
+    if (t.type === "income") {
+      dateSummary[t.date].income += t.amount;
+    } else {
+      dateSummary[t.date].expense += t.amount;
+    }
+  });
 
   const todaysTransactions = allTransactions.filter(
     (t) => t.date === selectedDate,
@@ -244,7 +281,10 @@ async function loadTransactions() {
     transactionsEl.innerHTML += `
       <div class="card mb-1">
         <div class="card-body d-flex justify-content-between align-items-center">
-          <span>${t.label}</span>
+          <span>
+  ${t.label}
+  ${t.category ? `<br><small class="text-muted">${t.category}</small>` : ""}
+</span>
           <div>
             <strong class="${
               t.type === "income" ? "text-success" : "text-danger"
@@ -280,6 +320,7 @@ async function loadTransactions() {
     lastMonthIncome,
     lastMonthExpense,
   );
+  renderCalendar();
 }
 
 /* UPDATE SAVINGS */
@@ -343,3 +384,82 @@ confirmDeleteBtn.onclick = async () => {
   const modalEl = document.getElementById("deleteModal");
   bootstrap.Modal.getInstance(modalEl).hide();
 };
+
+/* PIE CHART */
+let pieChart;
+
+function openChart(mode) {
+  chartModalInstance.show();
+
+  const data = {};
+
+  const canvas = document.getElementById("pieChart");
+  const emptyText = document.getElementById("chartEmptyText");
+
+  allTransactions.forEach((t) => {
+    let match = false;
+
+    if (mode === "day") {
+      match = t.date === selectedDate;
+    } else {
+      const selectedMonth = selectedDate.slice(0, 7); // YYYY-MM
+      match = t.date.slice(0, 7) === selectedMonth;
+    }
+
+    if (t.type === "expense" && match) {
+      data[t.category] = (data[t.category] || 0) + t.amount;
+    }
+  });
+
+  // CLEAN previous chart
+  if (pieChart) {
+    pieChart.destroy();
+    pieChart = null;
+  }
+
+  // EMPTY STATE
+  if (Object.keys(data).length === 0) {
+    canvas.style.display = "none";
+    emptyText.style.display = "block";
+    return;
+  }
+
+  // SHOW CHART
+  canvas.style.display = "block";
+  emptyText.style.display = "none";
+
+  pieChart = new Chart(canvas, {
+    type: "pie",
+    data: {
+      labels: Object.keys(data),
+      datasets: [
+        {
+          data: Object.values(data),
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "bottom",
+        },
+      },
+    },
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const modalEl = document.getElementById("chartModal");
+  chartModalInstance = new bootstrap.Modal(modalEl);
+
+  const btn = document.getElementById("openChartBtn");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      openChart("day");
+    });
+  }
+
+  document.getElementById("chartDay").onclick = () => openChart("day");
+  document.getElementById("chartMonth").onclick = () => openChart("month");
+});
