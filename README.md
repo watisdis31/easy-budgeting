@@ -1,40 +1,34 @@
-# 💸 EZ-Budgeting
+# 💸 EZ-Budgeting  
+**Because coping is expensive. Data is cheaper.**
 
-> *Because coping is expensive, data is cheaper.*
+EZ-Budgeting is a simple personal finance tracker that shows you where your money *actually* goes — not where you think it went.
 
-EZ-Budgeting is a simple but powerful personal finance tracker that helps you **see where your money actually goes** — not where you *think* it goes.
-
-Track your **income**, **expenses**, **daily spending**, and even **compare this month vs last month** so your wallet can stop gaslighting you.
+Track income, expenses, daily spending, and monthly comparisons so your wallet can stop gaslighting you.
 
 ---
 
 ## ✨ Features
-
-- 📅 Calendar-based daily tracking  
-- 💰 Income & expense logging  
-- 📊 Monthly summary (income, expense, savings)  
-- 📈 Month-to-month comparison  
-- 🧠 Human-friendly UX (Today / Yesterday labels)  
-- 🎮 Pokémon-inspired retro UI
-- 🔐 Google Sign-In (Firebase Auth)
+- 📅 Calendar-based daily tracking (device-based timezone)
+- 💰 Income & expense logging with categories
+- 📊 Daily & monthly summaries
+- 🥧 Pie chart (day / month)
+- 📈 Month-to-month comparison
+- 🎮 Retro Pokémon-style UI
+- 🔐 Google Sign-In (Firebase)
 
 ---
 
-## 💵 Currency Support
-
-- 🇮🇩 **IDR only (for now)**  
-  > More currencies *might* come later when I feel productive and not sleepy.
+## 💵 Currency
+🇮🇩 IDR only (for now)  
+More later when motivation > sleep.
 
 ---
 
 ## 🚀 Live Demo
+🌐 https://ez-budgeting.netlify.app  
+🌐 https://ez-budgeting.vercel.app  
 
-Try it here:
-
-- 🌐 https://ez-budgeting.netlify.app  
-- 🌐 https://ez-budgeting.vercel.app  
-
-*(Both work (hopefully). Pick your fighter.)*
+(Pick your fighter.)
 
 ---
 
@@ -65,12 +59,8 @@ So even if someone copies the key:
 ---
 
 ## 🧪 Tech Stack
-
-- HTML  
-- CSS  
-- JavaScript (Vanilla, no copium frameworks)  
-- Firebase Auth  
-- Firestore  
+HTML · CSS · JavaScript (Vanilla)  
+Firebase Auth · Firestore · Chart.js · Bootstrap
 
 ---
 
@@ -88,7 +78,7 @@ So I made my own.
 ## 🏁 Final Notes
 
 If this app helps you:
-- Spend less  
+- Spend less (Yes, less spending on pokemon packs too)
 - Save more  
 - Or just feel slightly more responsible  
 
@@ -100,3 +90,4 @@ Then it has done its job.
 ---
 
 *Easy budgeting. Less copium. More reality.*
+
