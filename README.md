@@ -25,10 +25,7 @@ More later when motivation > sleep.
 ---
 
 ## 🚀 Live Demo
-🌐 https://ez-budgeting.netlify.app  
 🌐 https://ez-budgeting.vercel.app  
-
-(Pick your fighter.)
 
 ---
 
